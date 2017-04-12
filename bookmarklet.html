@@ -643,12 +643,17 @@ Please send infectious, rhythmically engaging EDM Instrumentals that have a main
 </div>
 <div id='listings-Latin' class='listing'><h2 class='listing-header'>Latin</h2>
 <div id='listing-S170415LP' class='listing-item genre-Latin'><p>CONTEMPORARY LATIN POP SONGS with Male or Female Vocals are needed by a NON-Exclusive, Major European Media Company for In-Store background music plays. They&rsquo;re looking for authentic sounding, Mid-to-Up Tempo Latin Songs that you&rsquo;d hear on a playlists with acts like (but NOT limited to) Shakira, Pitbull, Enrique Iglesias, etc., etc., etc. Please listen to the following references to get in the stylistic wheelhouse of what they&rsquo;re looking for:</p>
-<p>&ldquo;Chantaje&rdquo; by Shakira ft. Maluma: 
+
+<!--p>&ldquo;Chantaje&rdquo; by Shakira ft. Maluma: 
 <a href="https://www.youtube.com/watch?v=HMqgVXSvwGo</p>" target="_out_of_taxi">https://www.youtube.com/watch?v=HMqgVXSvwGo</p></a>
 <p>&ldquo;Pitbull&rdquo; by Pitbull ft. John Ryan: 
 <a href="https://www.youtube.com/watch?v=HMqgVXSvwGo</p>" target="_out_of_taxi">https://www.youtube.com/watch?v=HMqgVXSvwGo</p></a>
 <p>&ldquo;Bailando&rdquo; by Enrique Iglesias ft. Descemer Bueno, Gente De Zona: 
-<a href="https://www.youtube.com/watch?v=HMqgVXSvwGo</p>" target="_out_of_taxi">https://www.youtube.com/watch?v=HMqgVXSvwGo</p></a>
+<a href="https://www.youtube.com/watch?v=HMqgVXSvwGo</p>" target="_out_of_taxi">https://www.youtube.com/watch?v=HMqgVXSvwGo</p></a-->
+
+
+
+
 <p>Please submit songs that are rhythmically, melodically, and lyrically engaging, with a vocal performance that generally reflects what you&rsquo;d expect to hear on today&rsquo;s Latin Pop charts. Your songs can feature vocals performed in either Latin, English, OR a combination of both! Having contemporary Pop beats with some Latin-flavored instruments added on top should do the trick. Do NOT copy or rip off the referenced artists in any way, shape, or form. Use them only as a guide for tempo, texture, and tone. Broadcast Quality is needed (great sounding home recordings are fine).</p>
 <p>NOTE: This company also pitches music for film, TV, and Commercials, and it&rsquo;s not uncommon for them to offer and sign deals with the composers and artists they find while hunting for the in-store music! </p>
 <p>NOTE 2: Please include a bio and photo with your submissions, as this company often may use them on their website or other promotional media.</p>
@@ -1090,20 +1095,8 @@ You are logged in as H-2411-4947, <a href="/newsession.php">click here if that's
 var taxiOn = turnOn();
 var listingID, capitalizedHeader, listingDate, firstParagraph, songLength, keywords, videoExamplesList;
 var listingItemsArray = [];
-var listingItemsArrayCopy = [];
 
-
-//var randomNum = Math.floor((Math.random() * 100000) + 1);
-//alert(randomNum);
-
-function updateList(item, action){
-	
-	
-	
-}
-
-
-
+function updateList(item, action){}
 
 function createListingItemList(listingItemsArray, remove){
 	
@@ -1141,7 +1134,7 @@ function detect_button(e)
 	
 			if((hasClass(thisDiv, "listing-item") == true) || (hasClass(thisDiv, "listing") == true)){
 		
-					var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|deal|engaging|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded|tension|drama|suspense|edgy|gritty/g;
+					var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|NON-Exclusive|Semi-Exclusive|SEMI-EXCLUSIVE|SEMI-Exclusive|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded/g;
 		
 					var numberOfChildren = thisDiv.getElementsByTagName('p').length;
 					var lastParagraphIndex = numberOfChildren-2;
@@ -1162,7 +1155,7 @@ function detect_button(e)
 					lastParagraph = lastParagraph.replace(regexB,' ');
 					lastParagraph = lastParagraph.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, "");
 	
-					var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/;
+					var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|SUNDAY|MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY/;
 					var validMonths = /January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec/;
 					var validYears = /2017|2018|2019|2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030/;
 					var validSongLength = /minutes|seconds/;
@@ -1205,15 +1198,31 @@ function detect_button(e)
 					}
 				
 				
+				
+					videoExamples = thisDiv.getElementsByTagName('a');				
+					//alert(videoExamples.length + " " + videoExamples[0].innerHTML);					
+					
 					//var x = new RegExp("^(http|https)://(youtu|www.youtube|vimeo|youtube)\.(be|com)/[A-Za-z0-9\?&=]+$")
-					//x.test(thisDiv);
-					videoExamples = thisDiv.getElementsByTagName('a');
-					if(videoExamples.length > 0){
+					//alert(x.test(videoExamples[0]).innerHTML);
+					
+					/*
+					for(var v = 0; v < 4; v++){
+						if((x.test(videoExamples[v].innerHTML) == true)){
+							console.log(v + "VIDEO TEST: " + x.test(videoExamples[v]).innerHTML);
+						}
+						else{
+							console.log(v + "NO VIDEOS");
+						}
+						
+					}
+					*/
+
+					if((videoExamples.length > 0) && (videoExamples[0].innerHTML != "Submit to this listing")){
 						videoExamplesList = videoExamples[0].innerHTML + "\n\t\t\t\t\t\t" + videoExamples[1].innerHTML + "\n\t\t\t\t\t\t" + videoExamples[2].innerHTML;
 					}
 					else
 					{
-						videoExamplesList = "No Examples Given.";
+						videoExamplesList = "----No Audio Examples Given----";
 					}
 					
 
@@ -1236,27 +1245,42 @@ function detect_button(e)
 					}
 					
 					
-					for(i=0;i<=lastParagraphIndex;i++){
-						//console.log("Keyword Paragraph " + i);// + ": " + thisDiv.getElementsByTagName('p')[i].innerHTML);
-						p = thisDiv.getElementsByTagName('p')[i].innerHTML;
-						matchKeywords[i] = p.match(keywords);
+					for(i=1;i<=lastParagraphIndex;i++){
+						var para = thisDiv.getElementsByTagName('p')[i].innerHTML;
+						matchKeywords[i] = para.match(keywords);
 						
 						if (matchKeywords[i] != null){
-						   // console.log("Contains accepted song length: " + matchAcceptedSongLength[i]);  
-						   keyword[i] = matchKeywords[i]; 
-						   console.log("keyword: " + i ); //+ " " + matchKeywords[i]);
+						   console.log("_______________keyword: " + i + " " + matchKeywords[i]);
+						   keyword.push(matchKeywords[i]);
+						   console.log("RETURN keyword: " + keyword[i]);
 						} 
 						else {
-							keyword[i] = "No keywords.";
+							//keyword.push("|NO keywords|");
 						}
 						
 					}
-
+					
+					"Your Name".toLowerCase();
+					
+					
+					var theKeywords = [];
+					var next;
+					
+					for(var k=0; k <= 3; k++){
+						if((keyword[k] !== undefined) && (keyword[k] !== null) && (keyword[k] !== '')){
+							next = keyword[k].toString().toLowerCase();
+							if((next !== keyword[0]) || (next !== keyword[1])){
+								theKeywords.push(next);
+							}
+							
+						}			
+					}
+					
 	
 					dateAndYear = lastParagraph.substr(str.indexOf(month) + 6);
 					listingDate = day + ", " + month + ", " + dateAndYear;
-					keywords = keyword[0] + ", " + keyword[1] + ", " + keyword[2];
-					listingItemsArray = [listingID, capitalizedHeader, listingDate, firstParagraph, songLength , keywords, videoExamplesList];
+					//var theKeywords = keyword[0] + ", " + keyword[1] + ", " + keyword[2];
+					listingItemsArray = [listingID, capitalizedHeader, listingDate, firstParagraph, songLength, theKeywords, videoExamplesList];
 					listingCopy = createListingItemList(listingItemsArray); //listingID + "\t" + capitalizedHeader + "\t" + listingDate + "\t" + firstParagraph + "\t" + keywords + "\t" + videoExamplesList;
 					alert(listingCopy);
 				}
@@ -1278,7 +1302,7 @@ theDiv.style.padding='20px';
 theDiv.style.display='inline-block';
 var radioFragment = document.createElement('div');
 
-radioFragment.innerHTML = '<img src = "http://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><hr><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keywords<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
+radioFragment.innerHTML = '<img src = "http://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><hr><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keyword<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
 
 theDiv.appendChild(radioFragment);
 document.body.appendChild( theDiv ); void(0);
