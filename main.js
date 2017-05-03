@@ -1,40 +1,28 @@
-/*********************************************************************************************************/
-/* TAXI
-/*********************************************************************************************************/
-
 var taxiOn = turnOn();
-var listingID, capitalizedHeader, listingDate, firstParagraph, songLength, keywords, videoExamplesList;
+var listingID, capitalizedHeader, listingDate, firstParagraph, songLength, videoExamplesList;
+var masterListArray = [];
 var listingItemsArray = [];
-var listingItemsArrayCopy = [];
+var theKeywords = [];
 
 
-
-function updateList(item, action){
+function createListingItemList(inputArr)
+{	
+	if(inputArr.length < 1){alert("You Have No Listing Items to Capture! \n Please choose at least 1.");}	
 	
-	
-	
+		var len = inputArr.length;
+		var theItems = inputArr[0] + "\t";
+		for (var i=1; i<len; i++) {	    
+			if(inputArr[i] != undefined){
+				theItems += inputArr[i] + "\t";		
+			}
+		}	
+		return theItems;
 }
 
 
-
-
-function createListingItemList(listingItemsArray, remove){
-	
-	listingItemsArray = listingItemsArray;
-	var len = listingItemsArray.length;
-	var theItems = listingItemsArray[0] + "\t";
-
-	for (var i=1; i<len; i++) {	    
-		if((listingItemsArray[i] != undefined) && ( i != remove)){
-			theItems += listingItemsArray[i] + "\t";		
-		}
-	}	
-	return theItems;
-}
 
 function detect_button(e)
-{	
-			
+{				
 	if(taxiOn === 1)
 		{
 		    e = e || window.event;
@@ -54,8 +42,12 @@ function detect_button(e)
 	
 			if((hasClass(thisDiv, "listing-item") == true) || (hasClass(thisDiv, "listing") == true)){
 		
-					var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|deal|engaging|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded|tension|drama|suspense|edgy|gritty/g;
-		
+					var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|NON-Exclusive|Semi-Exclusive|SEMI-EXCLUSIVE|SEMI-Exclusive|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded/g;
+					var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|SUNDAY|MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY/;
+					var validMonths = /January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec/;
+					var validYears = /2017|2018|2019|2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030/;
+					var validSongLength = /minutes|seconds/;
+					
 					var numberOfChildren = thisDiv.getElementsByTagName('p').length;
 					var lastParagraphIndex = numberOfChildren-2;
 					firstParagraph = thisDiv.getElementsByTagName('p')[0].innerHTML;
@@ -75,11 +67,6 @@ function detect_button(e)
 					lastParagraph = lastParagraph.replace(regexB,' ');
 					lastParagraph = lastParagraph.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, "");
 	
-					var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/;
-					var validMonths = /January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec/;
-					var validYears = /2017|2018|2019|2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030/;
-					var validSongLength = /minutes|seconds/;
-			
 					var str = lastParagraph;
 					var day = '';
 					var month = '';
@@ -99,12 +86,10 @@ function detect_button(e)
 					var videoExamplesList = [];
 					
 					for(i=0;i<=lastParagraphIndex;i++){
-						//console.log("Paragraph " + i);// + ": " + thisDiv.getElementsByTagName('p')[i].innerHTML);
 						p = thisDiv.getElementsByTagName('p')[i].innerHTML;
 						matchAcceptedSongLength[i] = p.match(validSongLength);
 						
 						if (matchAcceptedSongLength[i] != null){
-						   // console.log("Contains accepted song length: " + matchAcceptedSongLength[i]);  
 							songLengthTime = matchAcceptedSongLength[i];   
 							songLengthNumbers = p.substring(0, p.lastIndexOf(songLengthTime));
 							songLengthNumbers = songLengthNumbers.replace('All submissions should be',' ');
@@ -113,31 +98,25 @@ function detect_button(e)
 						} 
 						else {
 							//console.log("Does not contain song length word: ");
-						}
-						
+						}					
 					}
+							
 				
-				
-					//var x = new RegExp("^(http|https)://(youtu|www.youtube|vimeo|youtube)\.(be|com)/[A-Za-z0-9\?&=]+$")
-					//x.test(thisDiv);
-					videoExamples = thisDiv.getElementsByTagName('a');
-					if(videoExamples.length > 0){
+					videoExamples = thisDiv.getElementsByTagName('a');				
+
+					if((videoExamples.length > 0) && (videoExamples[0].innerHTML != "Submit to this listing")){
 						videoExamplesList = videoExamples[0].innerHTML + "\n\t\t\t\t\t\t" + videoExamples[1].innerHTML + "\n\t\t\t\t\t\t" + videoExamples[2].innerHTML;
 					}
-					else
-					{
-						videoExamplesList = "No Examples Given.";
+					else{
+						videoExamplesList = "----No Audio Examples Given----";
 					}
 					
-
 					if (matchAcceptedDays !== null){
-					    //console.log("Contains accepted word: " + matchAcceptedDays[0]);  
 						day = matchAcceptedDays[0];    
 					} else {//console.log("Does not contain accepted word: " + matchAcceptedDays[0]);
 					}
 
 					if (matchAcceptedMonth !== null){
-					    //console.log("Contains accepted word: " + matchAcceptedMonth[0]);  
 						month = matchAcceptedMonth[0];    
 					} else {//console.log("Does not contain accepted word: " + matchAcceptedMonth[0]);
 					}
@@ -147,34 +126,73 @@ function detect_button(e)
 						year = matchAcceptedYear[0];    
 					} else {//console.log("Does not contain accepted word: " + matchAcceptedYear[0]);
 					}
-					
-					
-					for(i=0;i<=lastParagraphIndex;i++){
-						//console.log("Keyword Paragraph " + i);// + ": " + thisDiv.getElementsByTagName('p')[i].innerHTML);
-						p = thisDiv.getElementsByTagName('p')[i].innerHTML;
-						matchKeywords[i] = p.match(keywords);
+										
+					for(i=1;i<=lastParagraphIndex;i++){
+						var para = thisDiv.getElementsByTagName('p')[i].innerHTML;
+						matchKeywords[i] = para.match(keywords);
 						
 						if (matchKeywords[i] != null){
-						   // console.log("Contains accepted song length: " + matchAcceptedSongLength[i]);  
-						   keyword[i] = matchKeywords[i]; 
-						   console.log("keyword: " + i ); //+ " " + matchKeywords[i]);
+						  // console.log("_______________keyword: " + i + " " + matchKeywords[i]);
+						   keyword.push(matchKeywords[i]);
+						  // console.log("RETURN keyword: " + keyword[i]);
 						} 
-						else {
-							keyword[i] = "No keywords.";
-						}
+						else {//keyword.push("|NO keywords|");
+						}					
+					}
+					
+
+					var next;	
+					for(var k=0; k <= 3; k++){
+						if((keyword[k] !== undefined) && (keyword[k] !== null) && (keyword[k] !== '')){
+							next = keyword[k].toString().toLowerCase();
+							if(next !== undefined){
+								if((next !== keyword[0]) || (next !== keyword[1])){
+									theKeywords.push(next);
+								}
+							}
 						
+						}			
+					}
+				
+				    //alert ("month length:  " + month.length);
+					
+					if(month.length < 5){
+						dateAndYear = lastParagraph.substr(str.indexOf(month) + 3);
+					}else{
+						dateAndYear = lastParagraph.substr(str.indexOf(month) + 6);
+					}
+				
+					
+					listingDate = day + ", " + month + " " + dateAndYear;				
+					masterListArray = [listingID, capitalizedHeader, listingDate, firstParagraph, songLength, theKeywords, videoExamplesList];
+					sortedArray = [];
+					
+					if(listingItemsArray.length == 100){
+						listingItemsArray = [listingID, capitalizedHeader, listingDate, firstParagraph, songLength, theKeywords, videoExamplesList];
+					}
+					else
+					{
+						var iArray = inputsToArray(listingItemsDiv.children);
+						var sortArrayIndex;
+						var iArrayIndex
+						for(sortArrayIndex = 0; sortArrayIndex < 7; sortArrayIndex++)
+						{						
+							for(iArrayIndex = 0; iArrayIndex < iArray.length; iArrayIndex++){
+								//console.log("s: " + sortArrayIndex + " | iArray[iArrayIndex]: " + iArray[iArrayIndex]);
+								if(sortArrayIndex == iArray[iArrayIndex]){
+									item = masterListArray[sortArrayIndex];
+									sortedArray.push(item);
+									//console.log("sort match: " + item);
+								}
+							}	
+						}
+						listingItemsArray = sortedArray;
 					}
 
-	
-					dateAndYear = lastParagraph.substr(str.indexOf(month) + 6);
-					listingDate = day + ", " + month + ", " + dateAndYear;
-					keywords = keyword[0] + ", " + keyword[1] + ", " + keyword[2];
-					listingItemsArray = [listingID, capitalizedHeader, listingDate, firstParagraph, songLength , keywords, videoExamplesList];
-					listingCopy = createListingItemList(listingItemsArray); //listingID + "\t" + capitalizedHeader + "\t" + listingDate + "\t" + firstParagraph + "\t" + keywords + "\t" + videoExamplesList;
+					listingCopy = createListingItemList(listingItemsArray); 
 					alert(listingCopy);
 				}
-				else
-				{
+				else{
 					//alert("Not on a listing!");
 				}	
 		}
@@ -191,7 +209,7 @@ theDiv.style.padding='20px';
 theDiv.style.display='inline-block';
 var radioFragment = document.createElement('div');
 
-radioFragment.innerHTML = '<img src = "http://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><hr><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keywords<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
+radioFragment.innerHTML = '<img src = "https://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><hr><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keyword<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
 
 theDiv.appendChild(radioFragment);
 document.body.appendChild( theDiv ); void(0);
@@ -229,7 +247,6 @@ radioBtnsContainerDiv.style.display='inline-block';
 
 // get reference to element containing toppings checkboxes
 var listingItemsDiv = document.getElementById('listingItems');
-
 // get reference to input elements in toppings container element
 var items = listingItemsDiv.getElementsByTagName('input');
 var len = items.length;
@@ -238,12 +255,36 @@ var len = items.length;
 for (var i=0; i<len; i++) {
     if ( items[i].type === 'checkbox' ) {
 		 //console.log("check box: " + i);
-        items[i].onclick = function() {
-			//alert(this.checked);
-			//createListingItemList(listingItemsArray, this.value);
+        	items[i].onclick = function() {
+			//alert(this.value);
+			var iArray = inputsToArray(listingItemsDiv.children);	
+			//createListingItemList(iArray);
         }
     }
 }
+
+
+function inputsToArray (inputs) {
+    var itemsArray = [];
+	var len = inputs.length;
+	
+	for (var i = 0; i < len; i++) 
+	{
+	    if ((inputs[i].checked) && (inputs[i].value != undefined))
+		{
+	        itemsArray.push(inputs[i].value);
+			//console.log("IN: " + inputs[i].value);
+	    }
+		else if (inputs[i].value != undefined)
+		{
+			//console.log("OUT: " + inputs[i].value);
+		}
+	}
+
+    return itemsArray;
+}
+
+
 
 
 function turnOn(){
