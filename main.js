@@ -2,7 +2,12 @@ var taxiOn = turnOn();
 var listingID, capitalizedHeader, listingDate, firstParagraph, songLength, videoExamplesList;
 var masterListArray = [];
 var listingItemsArray = [];
-var theKeywords = [];
+
+var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|NON-Exclusive|Semi-Exclusive|SEMI-EXCLUSIVE|SEMI-Exclusive|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded/g;
+var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|SUNDAY|MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY/;
+var validMonths = /January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec/;
+var validYears = /2017|2018|2019|2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030/;
+var validSongLength = /minutes|seconds/;
 
 
 function createListingItemList(inputArr)
@@ -40,14 +45,9 @@ function detect_button(e)
 			}
 
 	
-			if((hasClass(thisDiv, "listing-item") == true) || (hasClass(thisDiv, "listing") == true)){
-		
-					var keywords = /EXCLUSIVE|Exclusive|NON-EXCLUSIVE|Non-Exclusive|NON-Exclusive|Semi-Exclusive|SEMI-EXCLUSIVE|SEMI-Exclusive|Stinger|Non-Faded\/Buttoned|Buttoned|Non-Faded|stinger|buttoned|non-faded/g;
-					var validDays = /Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|SUNDAY|MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY/;
-					var validMonths = /January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec/;
-					var validYears = /2017|2018|2019|2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030/;
-					var validSongLength = /minutes|seconds/;
-					
+			if((hasClass(thisDiv, "listing-item") == true) || (hasClass(thisDiv, "listing") == true))
+			{
+	
 					var numberOfChildren = thisDiv.getElementsByTagName('p').length;
 					var lastParagraphIndex = numberOfChildren-2;
 					firstParagraph = thisDiv.getElementsByTagName('p')[0].innerHTML;
@@ -83,6 +83,7 @@ function detect_button(e)
 					var songLengthNumbers = '';
 					var songLength = '';
 					var keyword = [];
+					var theKeywords = [];
 					var videoExamplesList = [];
 					
 					for(i=0;i<=lastParagraphIndex;i++){
@@ -154,8 +155,7 @@ function detect_button(e)
 						}			
 					}
 				
-				    //alert ("month length:  " + month.length);
-					
+				    //alert ("month length:  " + month.length);				
 					if(month.length < 5){
 						dateAndYear = lastParagraph.substr(str.indexOf(month) + 3);
 					}else{
@@ -188,7 +188,9 @@ function detect_button(e)
 						}
 						listingItemsArray = sortedArray;
 					}
-
+					/***********************************/
+					//CREATE FINAL LIST AND SHOW USER
+					/***********************************/
 					listingCopy = createListingItemList(listingItemsArray); 
 					alert(listingCopy);
 				}
@@ -203,13 +205,15 @@ var theDiv = document.createElement( 'div' );
 //theDiv.appendChild( document.createTextNode('TAXI Listing Assistant'));
 theDiv.style.position="fixed";theDiv.style.zIndex='5000';theDiv.style.left='5px';theDiv.style.top='300px';theDiv.style.border='solid 3px #ffd200'; theDiv.style.backgroundColor='#555'; 
 theDiv.style.color='#ffd200';
-theDiv.style.width='200px';
-theDiv.style.height='300px';
+theDiv.style.width='180px';
+theDiv.style.height='310px';
 theDiv.style.padding='20px';
 theDiv.style.display='inline-block';
+theDiv.style.borderRadius = '20px';
+
 var radioFragment = document.createElement('div');
 
-radioFragment.innerHTML = '<img src = "https://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><hr><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keyword<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
+radioFragment.innerHTML = '<img src = "https://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keywords<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br><a id="closeBtn" href="#">Close</a></div>';
 
 theDiv.appendChild(radioFragment);
 document.body.appendChild( theDiv ); void(0);
@@ -226,6 +230,10 @@ radioOff.style.height='1.2em';
 radioOff.style.marginLeft='.9em';
 radioOn.onclick = turnOn;
 radioOff.onclick = turnOff;
+
+var closeBtn = document.getElementById('closeBtn');
+closeBtn.style.float='right';
+
 
 var label1 = theDiv.getElementsByTagName('label')[0];
 var label2 = theDiv.getElementsByTagName('label')[1];
@@ -284,7 +292,12 @@ function inputsToArray (inputs) {
     return itemsArray;
 }
 
-
+closeBtn.onclick = function(){
+	//alert("CLOSE");
+	//theDiv.style.display='none';
+	turnOff();
+	theDiv.parentNode.removeChild(theDiv);
+}
 
 
 function turnOn(){

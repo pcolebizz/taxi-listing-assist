@@ -1299,15 +1299,15 @@ var theDiv = document.createElement( 'div' );
 //theDiv.appendChild( document.createTextNode('TAXI Listing Assistant'));
 theDiv.style.position="fixed";theDiv.style.zIndex='5000';theDiv.style.left='5px';theDiv.style.top='300px';theDiv.style.border='solid 3px #ffd200'; theDiv.style.backgroundColor='#555'; 
 theDiv.style.color='#ffd200';
-theDiv.style.width='200px';
-theDiv.style.height='300px';
+theDiv.style.width='180px';
+theDiv.style.height='310px';
 theDiv.style.padding='20px';
 theDiv.style.display='inline-block';
 theDiv.style.borderRadius = '20px';
 
 var radioFragment = document.createElement('div');
 
-radioFragment.innerHTML = '<img src = "https://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keywords<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br></div>';
+radioFragment.innerHTML = '<img src = "https://www.taximusic.com/images/new/logo.png" width="145px"/><br>Listing Assistant <center><div id="radioBtnsContainer"><input type="radio" name="onoff" value="on" id="radOn" checked><label for="radOn">ON</label><input type="radio" name="onoff" value="off" id="radOff"><label for="radOff">OFF</label></div></center><hr><div id="listingItems">Listing Items:<br><input type="checkbox" name="listingItems" value="0" checked>Listing #<br><input type="checkbox" name="listingItems" value="1" checked>Title<br><input type="checkbox" name="listingItems" value="2" checked>Due Date<br><input type="checkbox" name="listingItems" value="3" checked>Description<br><input type="checkbox" name="listingItems" value="4" checked>Length<br><input type="checkbox" name="listingItems" value="5" checked>Keywords<br><input type="checkbox" name="listingItems" value="6" checked>Examples<br><a id="closeBtn" href="#">Close</a></div>';
 
 theDiv.appendChild(radioFragment);
 document.body.appendChild( theDiv ); void(0);
@@ -1324,6 +1324,10 @@ radioOff.style.height='1.2em';
 radioOff.style.marginLeft='.9em';
 radioOn.onclick = turnOn;
 radioOff.onclick = turnOff;
+
+var closeBtn = document.getElementById('closeBtn');
+closeBtn.style.float='right';
+
 
 var label1 = theDiv.getElementsByTagName('label')[0];
 var label2 = theDiv.getElementsByTagName('label')[1];
@@ -1382,7 +1386,12 @@ function inputsToArray (inputs) {
     return itemsArray;
 }
 
-
+closeBtn.onclick = function(){
+	//alert("CLOSE");
+	//theDiv.style.display='none';
+	turnOff();
+	theDiv.parentNode.removeChild(theDiv);
+}
 
 
 function turnOn(){
